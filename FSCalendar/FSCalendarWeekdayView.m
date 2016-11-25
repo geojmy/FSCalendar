@@ -46,7 +46,10 @@
     _weekdayLabels = [NSHashTable weakObjectsHashTable];
     for (int i = 0; i < 7; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        weekdayLabel.backgroundColor = [UIColor clearColor];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
+        weekdayLabel.layer.cornerRadius = 2.0f;
+        weekdayLabel.layer.masksToBounds = YES;
         [self.contentView addSubview:weekdayLabel];
         [_weekdayLabels addObject:weekdayLabel];
     }
@@ -59,10 +62,10 @@
     self.contentView.frame = self.bounds;
     
     CGFloat weekdayWidth = self.fs_width/self.weekdayLabels.count;
+    UIEdgeInsets shapeLayerInsets = _calendar.appearance.fillShapeEdgeInsets;
     [self.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
-        weekdayLabel.frame = CGRectMake(index*weekdayWidth, 0, weekdayWidth, self.contentView.fs_height);
+        weekdayLabel.frame = CGRectMake(index*weekdayWidth + shapeLayerInsets.left, shapeLayerInsets.top, weekdayWidth - shapeLayerInsets.left - shapeLayerInsets.right, self.contentView.fs_height - shapeLayerInsets.top - shapeLayerInsets.bottom);
     }];
-    
 }
 
 - (void)invalidateWeekdaySymbols
@@ -73,7 +76,12 @@
     [self.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
         index += self.calendar.firstWeekday-1;
         index %= 7;
-        label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
+        NSString *text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
+        if (self.calendar.appearance.weekdayTextAlignment == NSTextAlignmentLeft) {
+            label.text = [NSString stringWithFormat:@"  %@", text];
+        } else {
+            label.text = text;
+        }
     }];
 }
 

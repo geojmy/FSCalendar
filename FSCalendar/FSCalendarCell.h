@@ -65,6 +65,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 - (void)invalidateSubtitleFont;
 - (void)invalidateTitleTextColor;
 - (void)invalidateSubtitleTextColor;
+- (void)invalidateTitleAlignment;
+- (void)invalidateSubtitleAlignment;
 
 - (void)invalidateBorderColors;
 - (void)invalidateFillColors;

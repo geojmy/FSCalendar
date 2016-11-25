@@ -53,11 +53,21 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
 @property (strong, nonatomic) UIFont   *titleFont;
 
 /**
+ * The text alignment of the day text.
+ */
+@property (assign, nonatomic) NSTextAlignment titleAlignment;
+
+/**
  * The font of the subtitle text.
  *
  * @warning The size of font is adjusted by calendar size. To turn it off, set adjustsFontSizeToFitContentSize to NO;
  */
 @property (strong, nonatomic) UIFont   *subtitleFont;
+
+/**
+ * The text alignment of the subtitle text.
+ */
+@property (assign, nonatomic) NSTextAlignment subtitleAlignment;
 
 /**
  * The font of the weekday text.
@@ -89,9 +99,14 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
 @property (assign, nonatomic) CGPoint eventOffset;
 
 /**
- * The offset of the image from default position.
+ * The right-bottom corner offset of the image in calendar cell content view's bounds.
  */
 @property (assign, nonatomic) CGPoint imageOffset;
+
+/**
+ * The edge insets of the shape layer in calendar cell
+ */
+@property (assign, nonatomic) UIEdgeInsets fillShapeEdgeInsets;
 
 /**
  * The color of event dots.
@@ -107,6 +122,16 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
  * The color of weekday text.
  */
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
+
+/**
+ * The text alignment of weekday text.
+ */
+@property (assign, nonatomic) NSTextAlignment weekdayTextAlignment;
+
+/**
+ * The background color of weekday text.
+ */
+@property (strong, nonatomic) UIColor  *weekdayBackgroundColor;
 
 /**
  * The color of month header text.

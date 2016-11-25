@@ -149,25 +149,41 @@
                                           subtitleHeight
                                           );
     } else {
-        _titleLabel.frame = CGRectMake(
-                                       self.preferredTitleOffset.x,
-                                       self.preferredTitleOffset.y,
-                                       self.contentView.fs_width,
-                                       floor(self.contentView.fs_height*5.0/6.0)
-                                       );
+        if (_titleLabel.textAlignment == NSTextAlignmentLeft) {
+            _titleLabel.frame = CGRectMake(
+                                           self.preferredTitleOffset.x,
+                                           self.preferredTitleOffset.y,
+                                           self.contentView.fs_width - self.preferredTitleOffset.x - self.appearance.fillShapeEdgeInsets.right,
+                                           floor(self.contentView.fs_height*2.0/5.0)
+                                           );
+        }
+        else {
+            _titleLabel.frame = CGRectMake(
+                                           self.preferredTitleOffset.x,
+                                           self.preferredTitleOffset.y,
+                                           self.contentView.fs_width - self.preferredTitleOffset.x - self.appearance.fillShapeEdgeInsets.right,
+                                           floor(self.contentView.fs_height*5.0/6.0 - self.preferredTitleOffset.y)
+                                           );
+        }
     }
     
-    _imageView.frame = CGRectMake(self.preferredImageOffset.x, self.preferredImageOffset.y, self.contentView.fs_width, self.contentView.fs_height);
+    CGFloat imageWidth = _imageView.image.size.width;
+    CGFloat imageHeight = _imageView.image.size.height;
+    _imageView.frame = CGRectMake(self.bounds.size.width - self.preferredImageOffset.x - imageWidth, self.bounds.size.height - self.preferredImageOffset.y - imageHeight, imageWidth, imageHeight);
     
-    
-    
-    CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
-    CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
-    diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
-    _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
-                                   (titleHeight-diameter)/2,
-                                   diameter,
-                                   diameter);
+    if (UIEdgeInsetsEqualToEdgeInsets(self.appearance.fillShapeEdgeInsets, UIEdgeInsetsZero)) {
+        CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
+        CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
+        diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
+        _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
+                                       (titleHeight-diameter)/2,
+                                       diameter,
+                                       diameter);
+    }
+    else {
+        UIEdgeInsets shapeLayerInsets = self.appearance.fillShapeEdgeInsets;
+        _shapeLayer.frame = CGRectMake(shapeLayerInsets.left, shapeLayerInsets.top, self.bounds.size.width - shapeLayerInsets.left - shapeLayerInsets.right, self.bounds.size.height - shapeLayerInsets.top - shapeLayerInsets.bottom);
+    }
     
     CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
                                                 cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
@@ -301,6 +317,11 @@
     _titleLabel.textColor = self.colorForTitleLabel;
 }
 
+- (void)invalidateTitleAlignment
+{
+    _titleLabel.textAlignment = self.appearance.titleAlignment;
+}
+
 - (void)invalidateSubtitleFont
 {
     _subtitleLabel.font = self.appearance.preferredSubtitleFont;
@@ -309,6 +330,11 @@
 - (void)invalidateSubtitleTextColor
 {
     _subtitleLabel.textColor = self.colorForSubtitleLabel;
+}
+
+- (void)invalidateSubtitleAlignment
+{
+    _subtitleLabel.textAlignment = self.appearance.subtitleAlignment;
 }
 
 - (void)invalidateBorderColors
@@ -422,6 +448,8 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
         [self invalidateSubtitleFont];
         [self invalidateTitleTextColor];
         [self invalidateSubtitleTextColor];
+        [self invalidateTitleAlignment];
+        [self invalidateSubtitleAlignment];
         [self invalidateEventColors];
     }
 }

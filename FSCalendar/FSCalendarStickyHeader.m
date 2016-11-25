@@ -87,6 +87,8 @@
         [self invalidateHeaderTextColor];
         [self invalidateWeekdayFont];
         [self invalidateWeekdayTextColor];
+        [self invalidateWeekdayTextAlignment];
+        [self invalidateWeekdayBackgroundColor];
         [self invalidateWeekdaySymbols];
     }
 }
@@ -111,6 +113,18 @@
 - (void)invalidateWeekdayTextColor
 {
     [self.weekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
+}
+
+- (void)invalidateWeekdayTextAlignment
+{
+    [self.weekdayView.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj setTextAlignment:_appearance.weekdayTextAlignment];
+    }];
+}
+
+- (void)invalidateWeekdayBackgroundColor
+{
+    [self.weekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:_appearance.weekdayBackgroundColor];
 }
 
 - (void)invalidateWeekdaySymbols

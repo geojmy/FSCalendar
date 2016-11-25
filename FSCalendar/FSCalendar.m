@@ -114,6 +114,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
+- (void)invalidateWeekdayTextAlignment;
+- (void)invalidateWeekdayBackgroundColor;
 
 - (void)invalidateViewFrames;
 
@@ -1099,6 +1101,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self setNeedsLayout];
     [self invalidateWeekdayFont];
     [self invalidateWeekdayTextColor];
+    [self invalidateWeekdayTextAlignment];
+    [self invalidateWeekdayBackgroundColor];
     [self invalidateWeekdaySymbols];
     [self invalidateHeaders];
 }
@@ -1675,6 +1679,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)invalidateWeekdayTextColor
 {
     [self.calendarWeekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
+}
+
+- (void)invalidateWeekdayTextAlignment
+{
+    [self.calendarWeekdayView.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj setTextAlignment:_appearance.weekdayTextAlignment];
+    }];
+}
+
+- (void)invalidateWeekdayBackgroundColor
+{
+    [self.calendarWeekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:_appearance.weekdayBackgroundColor];
 }
 
 - (void)invalidateViewFrames

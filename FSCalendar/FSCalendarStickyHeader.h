@@ -23,6 +23,8 @@
 - (void)invalidateHeaderTextColor;
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
+- (void)invalidateWeekdayTextAlignment;
+- (void)invalidateWeekdayBackgroundColor;
 
 - (void)invalidateWeekdaySymbols;
 

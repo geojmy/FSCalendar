@@ -50,6 +50,8 @@
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
+- (void)invalidateWeekdayTextAlignment;
+- (void)invalidateWeekdayBackgroundColor;
 
 - (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;
